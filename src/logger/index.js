@@ -1,9 +1,20 @@
 function info(msg, obj = undefined) {
-  console.log(`${msg}`, obj);
+  if(typeof(obj) === "undefined") {
+    console.log(`${msg}`);
+  }
+  else {
+    console.log(`${msg}`, obj);
+  }
+
 }
 
 function error(msg, obj = undefined) {
-  console.error(`${msg}`, obj);
+  if(typeof(obj) === "undefined") {
+    console.error(`${msg}`);
+  }
+  else {
+    console.error(`${msg}`, obj);
+  }
 }
 
 export default {

@@ -2,8 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import Colours from "../lib/Colours";
 
-export default function NavBar() {
-  return <NavContainer>
+export default function NavBar(props) {
+  return <NavContainer height={props.height}>
     <AppTitle>Hacker News Reader</AppTitle>
   </NavContainer>;
 }
@@ -12,7 +12,7 @@ const NavContainer = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-  height: 80px;
+  height: ${props => props.height}px;
   width: 100%;
   background-color: ${Colours.brown};
   color: white;
