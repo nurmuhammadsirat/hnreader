@@ -8,7 +8,7 @@ import config from "../config";
 import logger from "../logger";
 import NavBar from "../components/Navbar";
 import Card from "../components/Card";
-import Colours from "../lib/Colours";
+import Colors from "../lib/Colors";
 
 function Main() {
   const [startItem, setStartItem] = useState(-1);

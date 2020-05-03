@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import Colours from "../lib/Colours";
+import Colors from "../lib/Colors";
 
 export default function NavBar(props) {
   return <NavContainer height={props.height}>
@@ -14,7 +14,7 @@ const NavContainer = styled.div`
   left: 0;
   height: ${props => props.height}px;
   width: 100%;
-  background-color: ${Colours.brown};
+  background-color: ${Colors.brown};
   color: white;
   display: flex;
   flex-direction: row;
