@@ -9,6 +9,7 @@ import logger from "../logger";
 import NavBar from "../components/Navbar";
 import Card from "../components/Card";
 import Colors from "../lib/Colors";
+import { isEven } from "../lib/Util";
 
 function Main() {
   const [startItem, setStartItem] = useState(-1);
@@ -99,12 +100,13 @@ function Main() {
     <MainContainer ref={mainElementRef}>
       <NavBar height={navbarHeight}/>
       <CardsContainer marginTop={navbarHeight}>
-        {cardInfo.current.map(info => <Card
+        {cardInfo.current.map((info, index) => <Card
             key={uuidv4()}
             by={info.by}
             time={info.time}
             title={info.title}
             url={info.url}
+            bgColor={isEven(index) ? Colors.green3 : Colors.green1}
             />
           )
         }
@@ -129,9 +131,41 @@ const CardsContainer = styled.div`
 `;
 
 const Spinner = styled.div`
-  width: inherit;
-  height: 30px;
-  border: 1px solid #000;
+  margin: 20px 0;
+  -webkit-animation: rotating 2s linear infinite;
+  -moz-animation: rotating 2s linear infinite;
+  -ms-animation: rotating 2s linear infinite;
+  -o-animation: rotating 2s linear infinite;
+  animation: rotating 2s linear infinite;
+
+  @-webkit-keyframes rotating /* Safari and Chrome */ {
+    from {
+      -webkit-transform: rotate(0deg);
+      -o-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    to {
+      -webkit-transform: rotate(360deg);
+      -o-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes rotating {
+    from {
+      -ms-transform: rotate(0deg);
+      -moz-transform: rotate(0deg);
+      -webkit-transform: rotate(0deg);
+      -o-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    to {
+      -ms-transform: rotate(360deg);
+      -moz-transform: rotate(360deg);
+      -webkit-transform: rotate(360deg);
+      -o-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }
 `;
 
 export default Main;
