@@ -26,7 +26,7 @@ function Main() {
     const scrollTop = mainElementRef.current.scrollTop;
     const percentScrolled = Math.round((scrollTop / (fullHeight - visibleHeight)) * 100);
     if(percentScrolled > reloadScrollPercentThreshold) {
-      logger.info("Fetching new items");
+      logger.debug("Fetching new items");
       setStartItem(startItem + itemsInSet);
     }
   }, [startItem]);
@@ -40,7 +40,7 @@ function Main() {
   }, [handleScroll]);
 
   useEffect(() => {
-    logger.info("Fetching Hacker News top stories.");
+    logger.debug("Fetching Hacker News top stories.");
     ApiClient.get(`${config.hnApiUrl}/topstories.json`)
       .then(resp => {
         topStories.current = resp.data;
@@ -64,7 +64,7 @@ function Main() {
     const newCardInfo = []
 
     itemsToFetch.forEach((item, index) => {
-      logger.info(`Fetching HN item ${item}`);
+      logger.debug(`Fetching HN item ${item}`);
       promises.push(
         ApiClient.get(`${config.hnApiUrl}/item/${item}.json`)
         .then(resp => {
