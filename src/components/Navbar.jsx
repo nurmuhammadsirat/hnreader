@@ -1,10 +1,15 @@
 import React from "react";
 import styled from "styled-components";
 import Colors from "../lib/Colors";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faRedo } from '@fortawesome/free-solid-svg-icons';
 
 export default function NavBar(props) {
   return <NavContainer height={props.height}>
     <AppTitle>Hacker News Reader</AppTitle>
+    <ReloadIcon onClick={props.handleClick}>
+      <FontAwesomeIcon icon={faRedo} />
+    </ReloadIcon>
   </NavContainer>;
 }
 
@@ -28,4 +33,9 @@ const AppTitle = styled.div`
   text-align: center;
   width: 70%;
   line-height: 1.1;
+`;
+
+const ReloadIcon = styled.div`
+  margin-left: 25px;
+  cursor: pointer;
 `;

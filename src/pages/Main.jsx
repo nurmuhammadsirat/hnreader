@@ -1,7 +1,7 @@
 import React, {useEffect, useState, useRef, useCallback} from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCog } from '@fortawesome/free-solid-svg-icons'
+import { faCog } from '@fortawesome/free-solid-svg-icons';
 import { v4 as uuidv4 }  from 'uuid';
 import ApiClient from "../lib/ApiClient";
 import config from "../config";
@@ -96,9 +96,14 @@ function Main() {
 
   const navbarHeight = 80;
 
+  function handleClick() {
+    logger.debug("Reloading HN top stories.");
+    window.location.reload();
+  }
+
   return (
     <MainContainer ref={mainElementRef}>
-      <NavBar height={navbarHeight}/>
+      <NavBar height={navbarHeight} handleClick={handleClick}/>
       <CardsContainer marginTop={navbarHeight}>
         {cardInfo.current.map((info, index) => <Card
             key={uuidv4()}
