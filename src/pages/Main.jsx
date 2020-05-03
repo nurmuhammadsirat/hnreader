@@ -135,7 +135,6 @@ function Main(props) {
           }
         </CardsContainer>
         <HNItem marginTop={navbarHeight}
-          show={showHNItem}
         />
       </Content>
     </MainContainer>
@@ -163,7 +162,9 @@ const CardsContainer = styled.div`
   ${props => props.hide ? `
     transition: all 0.3s ease-out;
     transform: translate(-100vw);
-  ` : null }
+  ` : `
+    transition: all 0.3s ease-out;
+  ` }
 `;
 
 const Spinner = styled.div`
