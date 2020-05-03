@@ -16,6 +16,7 @@
     "react-scripts": "3.4.1",
     "readability": "git+https://git@github.com/mozilla/readability.git",
     "styled-components": "^5.1.0",
+    "uuid": "^8.0.0",
     "webfontloader": "^1.6.28"
   },
   "scripts": {

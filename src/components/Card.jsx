@@ -3,10 +3,6 @@ import styled from "styled-components";
 
 export default function Card(props) {
   const {by, time, title, url} = props;
-  console.log("props: by", by);
-  console.log("props: time", time);
-  console.log("props: title", title);
-  console.log("props: url", url);
 
   return <CardContainer>
     <Title>{title}</Title>
