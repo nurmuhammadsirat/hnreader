@@ -8,23 +8,28 @@ import config from "../config";
 import logger from "../logger";
 import NavBar from "../components/Navbar";
 import Card from "../components/Card";
+import HNItem from "../components/HNItem";
 import Colors from "../lib/Colors";
 import { isEven } from "../lib/Util";
 
-function Main() {
+function Main(props) {
   const [startItem, setStartItem] = useState(-1);
   const [isFetchingCards, setIsFetchingCards] = useState(false);
+  const [showHNItem, setShowHNItem] = useState(false);
   const itemsInSet = 10;
   const reloadScrollPercentThreshold = 80;
 
   const cardInfo = useRef([]);
   const topStories = useRef([]);
-  const mainElementRef = useRef(null);
+  const cardContainerRef = useRef(null);
 
   const handleScroll = useCallback(() => {
-    const fullHeight = mainElementRef.current.scrollHeight;
-    const visibleHeight = mainElementRef.current.clientHeight;
-    const scrollTop = mainElementRef.current.scrollTop;
+    const fullHeight = cardContainerRef.current.scrollHeight;
+    const visibleHeight = cardContainerRef.current.clientHeight;
+    const scrollTop = cardContainerRef.current.scrollTop;
+    logger.debug("fullHeight:", fullHeight);
+    logger.debug("visibleHeight:", visibleHeight);
+    logger.debug("scrollTop:", scrollTop);
     const percentScrolled = Math.round((scrollTop / (fullHeight - visibleHeight)) * 100);
     if(percentScrolled > reloadScrollPercentThreshold) {
       logger.debug("Fetching new items");
@@ -33,7 +38,7 @@ function Main() {
   }, [startItem]);
 
   useEffect(() => {
-    const element = mainElementRef.current;
+    const element = cardContainerRef.current;
     element.addEventListener('scroll', handleScroll);
     return () => {
       element.removeEventListener('scroll', handleScroll);
@@ -55,7 +60,7 @@ function Main() {
   useEffect(() => {
     if(startItem < 0) { return }
 
-    const element = mainElementRef.current;
+    const element = cardContainerRef.current;
     element.removeEventListener('scroll', handleScroll);
 
     const itemsToFetch = topStories.current.slice(startItem, startItem + itemsInSet);
@@ -90,53 +95,81 @@ function Main() {
     });
   }, [startItem, handleScroll])
 
-  const spinner = <Spinner>
-    <FontAwesomeIcon icon={faCog} />
-  </Spinner>;
-
   const navbarHeight = 80;
 
-  function handleClick() {
+  function handleReload() {
     logger.debug("Reloading HN top stories.");
     window.location.reload();
   }
 
+  function handleBack() {
+    setShowHNItem(false);
+  }
+
   return (
-    <MainContainer ref={mainElementRef}>
-      <NavBar height={navbarHeight} handleClick={handleClick}/>
-      <CardsContainer marginTop={navbarHeight}>
-        {cardInfo.current.map((info, index) => <Card
-            key={uuidv4()}
-            by={info.by}
-            time={info.time}
-            title={info.title}
-            url={info.url}
-            bgColor={isEven(index) ? Colors.green3 : Colors.green1}
-            />
-          )
-        }
-      </CardsContainer>
-      {isFetchingCards ? spinner : null}
+    <MainContainer>
+      <NavBar
+        showBackButton={showHNItem}
+        height={navbarHeight}
+        handleReload={handleReload}
+        handleBack={handleBack}
+      />
+      {isFetchingCards ? <Spinner>
+        <FontAwesomeIcon icon={faCog} />
+      </Spinner> : null}
+      <Content>
+        <CardsContainer ref={cardContainerRef}
+          marginTop={navbarHeight}
+          hide={showHNItem}
+        >
+          {cardInfo.current.map((info, index) => <Card
+              key={uuidv4()}
+              by={info.by}
+              time={info.time}
+              title={info.title}
+              url={info.url}
+              bgColor={isEven(index) ? Colors.green3 : Colors.green1}
+              showHNItem={setShowHNItem}
+              />
+            )
+          }
+        </CardsContainer>
+        <HNItem marginTop={navbarHeight}
+          show={showHNItem}
+        />
+      </Content>
     </MainContainer>
   );
 }
 
 const MainContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  align-items: center;
+  display: block;
   height: 100vh;
-  overflow: scroll;
+  overflow: hidden;
+`;
+
+const Content = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 200vw;
 `;
 
 const CardsContainer = styled.div`
   margin-top: ${props => props.marginTop}px;
-  width: 100%;
+  width: 100vw;
+  height: calc(100vh - ${props => props.marginTop}px);
+  overflow-y: scroll;
+
+  ${props => props.hide ? `
+    transition: all 0.3s ease-out;
+    transform: translate(-100vw);
+  ` : null }
 `;
 
 const Spinner = styled.div`
-  margin: 20px 0;
+  margin-top: 120px;
+  text-align: center;
+  background-color: transparent;
   -webkit-animation: rotating 2s linear infinite;
   -moz-animation: rotating 2s linear infinite;
   -ms-animation: rotating 2s linear infinite;

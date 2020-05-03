@@ -17,7 +17,8 @@
     "readability": "git+https://git@github.com/mozilla/readability.git",
     "styled-components": "^5.1.0",
     "uuid": "^8.0.0",
-    "webfontloader": "^1.6.28"
+    "webfontloader": "^1.6.28",
+    "zustand": "^2.2.3"
   },
   "scripts": {
     "start": "REACT_APP_DEBUG=true react-scripts start",

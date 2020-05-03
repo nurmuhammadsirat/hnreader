@@ -1,26 +1,29 @@
 import React from "react";
+import {useHistory} from 'react-router-dom';
 import styled from "styled-components";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
+import {getDateStringFromUnixTime} from "../lib/Util";
+import { useStore } from "../store";
+import logger from "../logger";
 
 export default function Card(props) {
-  const {by, time, title, url, bgColor} = props;
+  const history = useHistory();
+  const {by, time, title, url, bgColor, showHNItem} = props;
 
-  const date = new Date(time * 1000);
-  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  const year = date.getFullYear();
-  const month = months[date.getMonth()];
-  const day = date.getDate();
-  const hour = date.getHours();
-  const min = date.getMinutes();
-  const sec = date.getSeconds();
-  const dateString = day + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
+  const setUrl = useStore(state => state.setUrl);
 
-  return <CardContainer bgColor={bgColor}>
+  function handleClick(){
+    logger.debug("Clicked on card with URL:", url);
+    setUrl(url);
+    showHNItem(true);
+  }
+
+  return <CardContainer bgColor={bgColor} onClick={handleClick}>
     <CardInfo>
       <Title>{title}</Title>
       <By>Posted by {by}</By>
-      <Time>On {dateString}</Time>
+      <Time>On {getDateStringFromUnixTime(time)}</Time>
     </CardInfo>
     <ViewIcon>
       <FontAwesomeIcon icon={faAngleRight} />
